@@ -14,6 +14,7 @@ public class HomeController {
 	@GetMapping("/")
 	public String index() throws JsonProcessingException {
 
+
 		return "redirect:swagger-ui.html";
 	}
 
