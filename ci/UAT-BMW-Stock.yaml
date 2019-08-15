@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: uat-bmw-order
+  namespace: uat
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: uat-bmw-order
+    spec:
+      containers:
+        - name: uat-bmw-order
+          image: registry.cn-beijing.aliyuncs.com/bmwpoc/uat-bmw-order:{version}
+          ports:
+            - name: http-port
+              containerPort: 20011
+          env:
+            - name: spring_profiles_active
+              value: k8s
+      imagePullSecrets:
+        - name: bmwpoc

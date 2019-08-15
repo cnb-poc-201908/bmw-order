@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: pro-bmw-order
+  namespace: pro
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pro-bmw-order
+    spec:
+      containers:
+        - name: pro-bmw-order
+          image: registry.cn-beijing.aliyuncs.com/bmwpoc/pro-bmw-order:{version}
+          ports:
+            - name: http-port
+              containerPort: 20011
+          env:
+            - name: spring_profiles_active
+              value: k8s
+      imagePullSecrets:
+        - name: bmwpoc
