@@ -4,7 +4,7 @@ import java.util.List;
 
 public class OrderGroup {
 	private Float totalPrice;
-	private Float matchRate;
+	private Integer matchRate;
 	private Integer amount;
 	private List<OrderDTO> orders;
 
@@ -22,10 +22,10 @@ public class OrderGroup {
 	public void setTotalPrice(Float totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	public Float getMatchRate() {
+	public Integer getMatchRate() {
 		return matchRate;
 	}
-	public void setMatchRate(Float matchRate) {
+	public void setMatchRate(Integer matchRate) {
 		this.matchRate = matchRate;
 	}
 	public Integer getAmount() {

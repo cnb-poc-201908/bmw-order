@@ -81,7 +81,10 @@ public class OrderService {
 					totalPrice += order.getTotalPrice();
 				}
 				group.setAmount(group.getOrders().size());
-				group.setMatchRate((float)unmatchAmount/group.getAmount());
+				logger.info("unmatchAmount {}", unmatchAmount);
+
+				Integer rate = Math.round((1f - (float)unmatchAmount/group.getAmount())*100);
+				group.setMatchRate(rate);
 				group.setTotalPrice(totalPrice);
 			}
 
