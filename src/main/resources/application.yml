@@ -17,6 +17,13 @@ spring:
         max-idle: 10
         max-active: 8
         max-wait: 10ms
+  datasource:
+    url: ENC(LxoS+c3EYWgN5dQdhdsm2GIKKPACY7AQi29Yji7z3qOkp4f0NK9CAzSUwCEXE6nzVPolFrZ0FcJH+KcJT2UCR1WUgm58/EGP)
+    username: ENC(wKc8VgZPxtjHxtDLJr0SogRDZ0+btGxI)
+    password: ENC(m2yW/RUbWhm8DrhDtBeWOzuJKbj/n0q2)
+
+mybatis:
+  mapper-locations: classpath:com/bmw/mapper/xml/*.xml
       
 server:
   port: 20011
@@ -67,6 +74,9 @@ eureka:
     instance-id: ${spring.application.name}:${server.port}
 
 swagger.enabled: true
+jasypt:
+  encryptor:
+    password: ds#$454KdLe^23A0V
 
 ---
 spring:
@@ -84,6 +94,10 @@ spring:
         max-idle: 10
         max-active: 8
         max-wait: 10ms
+  datasource:
+    url: ENC(LxoS+c3EYWgN5dQdhdsm2GIKKPACY7AQi29Yji7z3qOkp4f0NK9CAzSUwCEXE6nzVPolFrZ0FcJH+KcJT2UCR1WUgm58/EGP)
+    username: ENC(wKc8VgZPxtjHxtDLJr0SogRDZ0+btGxI)
+    password: ENC(m2yW/RUbWhm8DrhDtBeWOzuJKbj/n0q2)
 server:
   servlet:
     context-path: /order
@@ -123,6 +137,9 @@ eureka:
     instance-id: ${spring.application.name}:${server.port}
 
 swagger.enabled: true
+jasypt:
+  encryptor:
+    password: ds#$454KdLe^23A0V
 
 security:
   oauth2:
