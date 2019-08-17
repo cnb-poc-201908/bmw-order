@@ -76,8 +76,8 @@ public class OrderService {
 					if(!order.getMatched()) {
 						unmatchAmount++;
 					}
-					logger.info("totalPrice: {}", totalPrice);
-					logger.info("order.totalPrice: {}", order.getTotalPrice());
+					logger.debug("totalPrice: {}", totalPrice);
+					logger.debug("order.totalPrice: {}", order.getTotalPrice());
 					totalPrice += order.getTotalPrice();
 				}
 				group.setAmount(group.getOrders().size());

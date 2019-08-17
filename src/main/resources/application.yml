@@ -98,6 +98,8 @@ spring:
     url: ENC(LxoS+c3EYWgN5dQdhdsm2GIKKPACY7AQi29Yji7z3qOkp4f0NK9CAzSUwCEXE6nzVPolFrZ0FcJH+KcJT2UCR1WUgm58/EGP)
     username: ENC(wKc8VgZPxtjHxtDLJr0SogRDZ0+btGxI)
     password: ENC(m2yW/RUbWhm8DrhDtBeWOzuJKbj/n0q2)
+mybatis:
+  mapper-locations: classpath:com/bmw/mapper/xml/*.xml
 server:
   servlet:
     context-path: /order
