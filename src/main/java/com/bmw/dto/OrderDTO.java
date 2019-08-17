@@ -16,6 +16,7 @@ public class OrderDTO {
 	private Float price;
 	private Float totalPrice;
 	private String configCode;
+	private String configDesc;
 	private String dealerStatus;
 	private String materialsId;
 	private Integer remain;
@@ -29,6 +30,7 @@ public class OrderDTO {
 	private String colorCodeT;
 	private String colorDescT;
 	private String configCodeT;
+	private String configDescT;
 
 	private Boolean upholsteryMatched;
 	private Boolean addCodeMatched;
@@ -222,6 +224,18 @@ public class OrderDTO {
 	}
 	public void setMatched(Boolean matched) {
 		this.matched = matched;
+	}
+	public String getConfigDesc() {
+		return configDesc;
+	}
+	public void setConfigDesc(String configDesc) {
+		this.configDesc = configDesc;
+	}
+	public String getConfigDescT() {
+		return configDescT;
+	}
+	public void setConfigDescT(String configDescT) {
+		this.configDescT = configDescT;
 	}
 
 }

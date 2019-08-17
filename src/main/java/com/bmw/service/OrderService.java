@@ -62,8 +62,10 @@ public class OrderService {
 			group.setColorCode(order.getColorCodeT());
 			group.setColorDesc(order.getColorCodeT());
 			group.setConfigCode(order.getConfigCodeT());
+			group.setConfigDesc(order.getConfigDescT());
 			group.setUpholsteryCode(order.getUpholsteryCodeT());
 			group.setUpholsteryDesc(order.getUpholsteryDescT());
+
 		}
 
 		List<OrderGroup> list = new ArrayList<>(groupMap.values());
@@ -105,6 +107,8 @@ public class OrderService {
 				}
 				order.setAddDescs(addDescs);
 			}
+			//处理实际车型描述
+			order.setConfigDesc(BMWPocConstants.CONFIGS.get(order.getConfigCode()));
 			//处理目标加装配置描述
 			String addCodesT = order.getAddCodesT();
 			if(StringUtils.isNotBlank(addCodesT) && !addCodesT.equals(BMWPocConstants.VALUE_OF_NOADD)) {
@@ -120,6 +124,9 @@ public class OrderService {
 
 			//设置目标内饰描述
 			order.setUpholsteryDescT(BMWPocConstants.UPHOLSTERIES.get(order.getUpholsteryCodeT()));
+
+			//设置目标车型描述
+			order.setConfigDescT(BMWPocConstants.CONFIGS.get(order.getConfigCodeT()));
 
 			order.setMatched(Boolean.TRUE);
 			//判断加装配置是否匹配

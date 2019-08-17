@@ -15,6 +15,7 @@ public class OrderGroup {
 	private String colorCode;
 	private String colorDesc;
 	private String configCode;
+	private String configDesc;
 
 	public Float getTotalPrice() {
 		return totalPrice;
@@ -81,6 +82,12 @@ public class OrderGroup {
 	}
 	public void setConfigCode(String configCode) {
 		this.configCode = configCode;
+	}
+	public String getConfigDesc() {
+		return configDesc;
+	}
+	public void setConfigDesc(String configDesc) {
+		this.configDesc = configDesc;
 	}
 
 }
