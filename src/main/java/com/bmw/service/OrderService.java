@@ -1,6 +1,7 @@
 package com.bmw.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,12 +30,59 @@ public class OrderService {
 		paramMap.put("dealerId", dealerId);
 		List<OrderDTO> orders = orderMapper.getUnconfirmedOrderList(paramMap);
 
-		processUnconfirmedOrders(orders);
+		processOrders(orders);
 		Map<String, OrderGroup> groupMap = new HashMap<>();
 		return groupOrders(orders, groupMap);
-
-
 	}
+
+	public List<OrderGroup> getUnpaidOrderGroups(String dealerId){
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("dealerId", dealerId);
+		List<OrderGroup> groups = orderMapper.getUnpaidOrderGroups(paramMap);
+
+		if(groups != null) {
+			for(OrderGroup group: groups) {
+				paramMap.put("colorCode", group.getColorCode());
+				paramMap.put("upholsteryCode", group.getUpholsteryCode());
+				paramMap.put("configCode", group.getConfigCode());
+				paramMap.put("addCode", group.getAddCodes());
+				List<OrderDTO> orders = orderMapper.getUnpaidOrdersByGroup(paramMap);
+				processOrders(orders);
+				group.setOrders(orders);
+				concatOrderIds(group);
+				generateGroupId(group);
+				group.setAddDescs(getAddDescs(group.getAddCodes()));
+			}
+		}
+		return groups;
+	}
+
+	public List<OrderGroup> getRemains(String dealerId){
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("dealerId", dealerId);
+		List<OrderGroup> groups = orderMapper.getRemains(paramMap);
+		if(groups != null) {
+			for(OrderGroup group: groups) {
+				generateGroupId(group);
+			}
+		}
+		return groups;
+	}
+
+	public void updateOrderStatus(String dealerStatus,List<String> orderIdsList) {
+		Map<String, Object> paramMap = new HashMap<>();
+		List<String> orderIdList = new ArrayList<>();
+		paramMap.put("dealerStatus", dealerStatus);
+		if(orderIdsList!=null) {
+			for(String orderIdsString : orderIdsList) {
+				String[] orderIds = orderIdsString.split(BMWPocConstants.ORDER_ID_SEPARATOR);
+				orderIdList.addAll(Arrays.asList(orderIds));
+			}
+			paramMap.put("orderIdList", orderIdList);
+		}
+		orderMapper.updateOrderStatus(paramMap);
+	}
+
 
 	private List<OrderGroup> groupOrders(List<OrderDTO> orders, Map<String, OrderGroup> groupMap) {
 		for(OrderDTO order : orders) {
@@ -88,37 +136,57 @@ public class OrderService {
 				Integer rate = Math.round((1f - (float)unmatchAmount/group.getAmount())*100);
 				group.setMatchRate(rate);
 				group.setTotalPrice(totalPrice);
+				concatOrderIds(group);
 			}
 
 		}
 		return list;
 	}
 
-	private void processUnconfirmedOrders(List<OrderDTO> orders) {
+	private List<String> getAddDescs(String addCodes){
+		List<String> addDescs = new ArrayList<>();
+		if(StringUtils.isNotBlank(addCodes) && !addCodes.equals(BMWPocConstants.VALUE_OF_NOADD)) {
+			String[] codes = addCodes.split(BMWPocConstants.ADD_SEPARATOR);
+			for(String code : codes) {
+				addDescs.add(BMWPocConstants.ADDS.get(code));
+			}
+		}
+		return addDescs;
+	}
+
+	private void generateGroupId(OrderGroup group) {
+		StringBuilder groupId = new StringBuilder();
+		groupId.append(group.getColorCode())
+			   .append(BMWPocConstants.ORDER_ID_SEPARATOR)
+			   .append(group.getUpholsteryCode())
+			   .append(BMWPocConstants.ORDER_ID_SEPARATOR)
+			   .append(group.getConfigCode())
+			   .append(BMWPocConstants.ORDER_ID_SEPARATOR)
+			   .append(group.getAddCodes());
+		group.setGroupId(groupId.toString());
+	}
+
+	private void concatOrderIds(OrderGroup group) {
+		List<OrderDTO> orders = group.getOrders();
+		StringBuilder orderIds = new StringBuilder();
+		if(orders != null) {
+			for(OrderDTO order : orders) {
+				orderIds.append(order.getOrderId());
+				orderIds.append(BMWPocConstants.ORDER_ID_SEPARATOR);
+			}
+		}
+		group.setOrderIds(orderIds.substring(0, orderIds.length() - 1));
+	}
+
+	private void processOrders(List<OrderDTO> orders) {
 		for(OrderDTO order : orders) {
 			//处理实际总价以及加装配置描述
-			String addCodes = order.getAddCodes();
 			order.setTotalPrice(order.getPrice() + order.getAddPrice());
-			if(StringUtils.isNotBlank(addCodes) && !addCodes.equals(BMWPocConstants.VALUE_OF_NOADD)) {
-				String[] codes = addCodes.split(BMWPocConstants.ADD_SEPARATOR);
-				List<String> addDescs = new ArrayList<>();
-				for(String code : codes) {
-					addDescs.add(BMWPocConstants.ADDS.get(code));
-				}
-				order.setAddDescs(addDescs);
-			}
+			order.setAddDescs(getAddDescs(order.getAddCodes()));
 			//处理实际车型描述
 			order.setConfigDesc(BMWPocConstants.CONFIGS.get(order.getConfigCode()));
 			//处理目标加装配置描述
-			String addCodesT = order.getAddCodesT();
-			if(StringUtils.isNotBlank(addCodesT) && !addCodesT.equals(BMWPocConstants.VALUE_OF_NOADD)) {
-				String[] codesT = addCodesT.split(BMWPocConstants.ADD_SEPARATOR);
-				List<String> addDescsT = new ArrayList<>();
-				for(String codeT : codesT) {
-					addDescsT.add(BMWPocConstants.ADDS.get(codeT));
-				}
-				order.setAddDescsT(addDescsT);
-			}
+			order.setAddDescsT(getAddDescs(order.getAddCodesT()));
 			//设置目标颜色描述
 			order.setColorDescT(BMWPocConstants.COLORS.get(order.getColorCodeT()));
 
@@ -162,15 +230,4 @@ public class OrderService {
 			}
 		}
 	}
-
-
-	public List<OrderGroup> getUnpaiedOrderList(){
-
-		return null;
-	}
-
-	/*
-	public List<OrderDTO> getPaiedOrderList(){
-
-	}*/
 }

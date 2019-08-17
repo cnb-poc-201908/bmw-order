@@ -2,7 +2,12 @@ package com.bmw.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class OrderGroup {
+	private String groupId;
 	private Float totalPrice;
 	private Integer matchRate;
 	private Integer amount;
@@ -16,6 +21,9 @@ public class OrderGroup {
 	private String colorDesc;
 	private String configCode;
 	private String configDesc;
+	private Integer remain;
+	private Integer totalRemain;
+	private String orderIds;
 
 	public Float getTotalPrice() {
 		return totalPrice;
@@ -88,6 +96,30 @@ public class OrderGroup {
 	}
 	public void setConfigDesc(String configDesc) {
 		this.configDesc = configDesc;
+	}
+	public Integer getRemain() {
+		return remain;
+	}
+	public void setRemain(Integer remain) {
+		this.remain = remain;
+	}
+	public Integer getTotalRemain() {
+		return totalRemain;
+	}
+	public void setTotalRemain(Integer totalRemain) {
+		this.totalRemain = totalRemain;
+	}
+	public String getOrderIds() {
+		return orderIds;
+	}
+	public void setOrderIds(String orderIds) {
+		this.orderIds = orderIds;
+	}
+	public String getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 
 }

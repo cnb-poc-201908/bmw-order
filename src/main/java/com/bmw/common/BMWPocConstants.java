@@ -19,6 +19,7 @@ public class BMWPocConstants {
 	public static final String DEFAULT_JULIAN_DATE = "2458000";
 	public static final String VALUE_OF_NOADD = "N";
 	public static final String ADD_SEPARATOR = "-";
+	public static final String ORDER_ID_SEPARATOR = "-";
 	//车型附加配置项
 	public static final Map<String, String> ADDS = new HashMap<>();
 	public static final Map<String, String> UPHOLSTERIES = new HashMap<>();

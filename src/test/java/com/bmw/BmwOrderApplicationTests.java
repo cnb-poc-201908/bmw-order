@@ -18,13 +18,17 @@ public class BmwOrderApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		/*
 		String url = encryptor.encrypt("jdbc:postgresql://112.126.99.2:31543/salesdb?useSSL=false");
 		String name = encryptor.encrypt("postgresadmin");
         String password = encryptor.encrypt("admin123");
 
         System.out.println(url);
         System.out.println(name);
-        System.out.println(password);
+        System.out.println(password);*/
+
+		String a = "12345-";
+		System.out.println(a.substring(0, a.length() - 1));
 	}
 
 }

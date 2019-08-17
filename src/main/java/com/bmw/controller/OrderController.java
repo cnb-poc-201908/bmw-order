@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bmw.dto.OrderGroup;
-import com.bmw.entity.Materials;
 import com.bmw.entity.response.RestResponse;
-import com.bmw.service.MaterialService;
 import com.bmw.service.OrderService;
 
 import io.swagger.annotations.ApiOperation;
@@ -22,25 +22,7 @@ import io.swagger.annotations.ApiOperation;
 public class OrderController {
 
 	@Autowired
-	private MaterialService materialService;
-
-	@Autowired
 	private OrderService orderService;
-
-	@GetMapping(value = "/{dearlerId}", produces = "application/json")
-	@ApiOperation(value = "供应商订单列表接口")
-	public RestResponse<Object> getOrders(
-			@PathVariable(value = "dearlerId", required = true) String dearlerId) {
-		return new RestResponse<>();
-	}
-
-	@GetMapping(value = "/materials", produces = "application/json")
-	@ApiOperation(value = "物料列表接口")
-	public RestResponse<List<Materials>> getOrders() {
-		RestResponse<List<Materials>> response = new RestResponse<>();
-		response.setData(materialService.getMaterialsList());
-		return response;
-	}
 
 	@GetMapping(value = "/unconfirmed", produces = "application/json")
 	@ApiOperation(value = "待确定订单列表接口")
@@ -50,4 +32,51 @@ public class OrderController {
 		response.setData(orderService.getUnconfirmedOrderList(dealerId));
 		return response;
 	}
+
+	@GetMapping(value = "/unpaid", produces = "application/json")
+	@ApiOperation(value = "未支付订单列表接口")
+	public RestResponse<List<OrderGroup>> getUnpaidOrderList(
+			@RequestParam(value = "dealerId", required = true) String dealerId){
+		RestResponse<List<OrderGroup>> response = new RestResponse<>();
+		response.setData(orderService.getUnpaidOrderGroups(dealerId));
+		return response;
+	}
+
+	@GetMapping(value = "/remains", produces = "application/json")
+	@ApiOperation(value = "库存数目列表接口")
+	public RestResponse<List<OrderGroup>> getRemains(
+			@RequestParam(value = "dealerId", required = true) String dealerId){
+		RestResponse<List<OrderGroup>> response = new RestResponse<>();
+		response.setData(orderService.getRemains(dealerId));
+		return response;
+	}
+
+	@PutMapping(value = "/status/change/{status}", produces = "application/json")
+	@ApiOperation(value = "更改订单状态接口")
+	public RestResponse<Object> updateOrderStatus(
+			@PathVariable(value = "status", required = true) String status,
+			@RequestBody List<String> orderIdsList){
+		orderService.updateOrderStatus(status, orderIdsList);
+		return new RestResponse<>();
+	}
+
+	/*
+	@GetMapping(value = "/unpaid", produces = "application/json")
+	@ApiOperation(value = "未支付订单列表接口")
+	public RestResponse<List<OrderGroup>> getUnpaidOrderList(
+			@RequestParam(value = "dealerId", required = true) String dealerId){
+		RestResponse<List<OrderGroup>> response = new RestResponse<>();
+		response.setData(orderService.getUnpaidOrderGroups(dealerId));
+		return response;
+	}
+
+
+	@GetMapping(value = "/unpaid", produces = "application/json")
+	@ApiOperation(value = "已支付订单列表接口")
+	public RestResponse<List<OrderGroup>> getPaidOrderList(
+			@RequestParam(value = "dealerId", required = true) String dealerId){
+		RestResponse<List<OrderGroup>> response = new RestResponse<>();
+		response.setData(orderService.getPaidOrderGroups(dealerId));
+		return response;
+	}*/
 }

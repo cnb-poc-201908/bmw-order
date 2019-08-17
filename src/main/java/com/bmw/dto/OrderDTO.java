@@ -2,6 +2,10 @@ package com.bmw.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class OrderDTO {
 	private String dealerId;
 	private String apw;
@@ -19,8 +23,6 @@ public class OrderDTO {
 	private String configDesc;
 	private String dealerStatus;
 	private String materialsId;
-	private Integer remain;
-	private Integer totalRemain;
 	private String upholsteryCodeT;
 	private String upholsteryDescT;
 	private String addCodesT;
@@ -122,18 +124,6 @@ public class OrderDTO {
 	}
 	public void setTotalPrice(Float totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-	public Integer getRemain() {
-		return remain;
-	}
-	public void setRemain(Integer remain) {
-		this.remain = remain;
-	}
-	public Integer getTotalRemain() {
-		return totalRemain;
-	}
-	public void setTotalRemain(Integer totalRemain) {
-		this.totalRemain = totalRemain;
 	}
 	public String getConfigCode() {
 		return configCode;

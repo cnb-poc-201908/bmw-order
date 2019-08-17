@@ -42,8 +42,6 @@
     <result column="price" jdbcType="BIGINT" property="price" />
     <result column="dealerStatus" jdbcType="BIGINT" property="dealerStatus" />
     <result column="materialsId" jdbcType="VARCHAR" property="materialsId" />
-    <result column="remain" jdbcType="VARCHAR" property="remain" />
-    <result column="totalRemain" jdbcType="VARCHAR" property="totalRemain" />
     
     <result column="configCode" jdbcType="VARCHAR" property="configCode" />
     <result column="upholsteryCodeT" jdbcType="VARCHAR" property="upholsteryCodeT" />
@@ -54,7 +52,22 @@
     <result column="configCodeT" jdbcType="VARCHAR" property="configCodeT" />
   </resultMap>
   
-  <select id="getUnconfirmedOrderList" parameterType="java.util.Map" resultMap="OrderDTO">
+  <resultMap id="OrderGroup" type="com.bmw.dto.OrderGroup">
+    <result column="amount" jdbcType="BIGINT" property="amount" />
+    <result column="totalPrice" jdbcType="FLOAT" property="totalPrice" />
+    <result column="remain" jdbcType="BIGINT" property="remain" />
+    <result column="totalRemain" jdbcType="BIGINT" property="totalRemain" />
+    
+    <result column="addCode" jdbcType="VARCHAR" property="addCodes" />
+    <result column="colorCode" jdbcType="VARCHAR" property="colorCode" />
+    <result column="colorDesc" jdbcType="VARCHAR" property="colorDesc" />
+    <result column="upholsteryCode" jdbcType="VARCHAR" property="upholsteryCode" />
+    <result column="upholsteryDesc" jdbcType="VARCHAR" property="upholsteryDesc" />
+    <result column="configCode" jdbcType="VARCHAR" property="configCode" />
+    <result column="configDesc" jdbcType="VARCHAR" property="configDesc" />
+  </resultMap>
+  
+  <sql id="Base_Get_Orders">
 		SELECT o."dealerId", o."orderId",
 		       'BMW' as "brand", mt."modelCode", 
 			   mt."apw", 
@@ -68,6 +81,75 @@
 			   mt."configCode",
 			   o."configCode" as "configCodeT"
 			FROM sales.materials mt, sales.order o where mt."materialsId" = o."materialsId" 
-			and o."dealerId" =  #{dealerId} and o."dealerStatus" = '1'
+  </sql>
+  
+  <select id="getUnconfirmedOrderList" parameterType="java.util.Map" resultMap="OrderDTO">
+			<include refid="Base_Get_Orders" />
+			and o."dealerId" =  #{dealerId} 
+			and o."dealerStatus" = '1'
   </select>
+  
+  <select id="getUnpaidOrderGroups" parameterType="java.util.Map" resultMap="OrderGroup">
+		select 
+		sum(mt.price+cast(mt."addPrice" as double precision)) as "totalPrice",
+		count(*) as amount, 
+		(select count(*) from sales.materials mat, sales.order od 
+		 	where mat."materialsId" = od."materialsId" 
+		 	and od."dealerStatus" != '3') as "totalRemain",
+		(select count(*) from sales.materials mat, sales.order od 
+		 	where mat."materialsId" = od."materialsId" 
+		 	and od."dealerStatus" != '3'
+			and mat."colorCode" = o."colorCode"
+			and mat."upholsteryCode" = o."upholsteryCode"
+			and mat."configCode" = o."configCode"
+			and mat."addCode" = o."addCode") as remain,
+		o."colorCode", o."upholsteryCode",o."configCode", o."addCode",
+		co."colorDescription" as "colorDesc",
+		up."upholsteryDescription" as "upholsteryDesc", 
+		va."variantDescription" as "configDesc"
+		from sales.order o,sales.materials mt, sales.color co, sales.upholstery up, sales.variant va
+		where o."dealerId"= #{dealerId} and o."materialsId" = mt."materialsId"
+		and o."colorCode" = co."colorCode" 
+		and o."dealerStatus" = '1'<!-- change to 2 -->
+		and o."upholsteryCode" = up."upholsteryCode" 
+		and o."configCode" = va."variantCode"
+		group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode", 
+		co."colorDescription", up."upholsteryDescription", va."variantDescription"
+  </select>
+  
+  <select id="getRemains" parameterType="java.util.Map" resultMap="OrderGroup">
+		select count(*) as amount,
+		(select count(*) from sales.materials mat, sales.order od 
+		 	where mat."materialsId" = od."materialsId" 
+		 	and od."dealerStatus" != '3') as "totalRemain",
+		(select count(*) from sales.materials mat, sales.order od 
+		 	where mat."materialsId" = od."materialsId" 
+		 	and od."dealerStatus" != '3'
+			and mat."colorCode" = o."colorCode"
+			and mat."upholsteryCode" = o."upholsteryCode"
+			and mat."configCode" = o."configCode"
+			and mat."addCode" = o."addCode") as remain,
+		o."colorCode", o."upholsteryCode",o."configCode", o."addCode"
+		from sales.order o,sales.materials mt
+		where o."dealerId"= #{dealerId} and o."materialsId" = mt."materialsId"
+		and o."dealerStatus" = '1'<!-- change to 2 -->
+		group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode"
+  </select>
+  
+  <select id="getUnpaidOrdersByGroup" parameterType="java.util.Map" resultMap="OrderDTO">
+			<include refid="Base_Get_Orders" />
+			and o."dealerId" =  #{dealerId} 
+			and o."dealerStatus" = '1'<!-- change to 2 -->
+			and o."colorCode" = #{colorCode}
+			and o."upholsteryCode" = #{upholsteryCode}
+			and o."configCode" = #{configCode}
+			and o."addCode" = #{addCode}
+  </select>
+  
+  <update id="updateOrderStatus" parameterType="java.util.Map">
+	update sales.order set "dealerStatus" = #{dealerStatus} 
+	where "orderId" in <foreach item="orderId" index="index" collection="orderIdList" open="(" separator="," close=")">
+				#{orderId}
+	</foreach>
+  </update>
 </mapper>
