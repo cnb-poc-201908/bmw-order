@@ -149,7 +149,7 @@
   <select id="getPaidOrderList" parameterType="java.util.Map" resultMap="OrderDTO">
 			<include refid="Base_Get_Orders" />
 			and o."dealerId" =  #{dealerId} 
-			and o."dealerStatus" = '1'<!-- change to 3 -->
+			and o."dealerStatus" = '3'
   </select>
   
   <update id="updateOrderStatus" parameterType="java.util.Map">
