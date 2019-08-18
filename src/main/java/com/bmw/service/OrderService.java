@@ -69,6 +69,16 @@ public class OrderService {
 		return groups;
 	}
 
+	public List<OrderGroup> getPaidOrderList(String dealerId){
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("dealerId", dealerId);
+		List<OrderDTO> orders = orderMapper.getPaidOrderList(paramMap);
+
+		processOrders(orders);
+		Map<String, OrderGroup> groupMap = new HashMap<>();
+		return groupOrders(orders, groupMap);
+	}
+
 	public void updateOrderStatus(String dealerStatus,List<String> orderIdsList) {
 		Map<String, Object> paramMap = new HashMap<>();
 		List<String> orderIdList = new ArrayList<>();
@@ -179,6 +189,7 @@ public class OrderService {
 	}
 
 	private void processOrders(List<OrderDTO> orders) {
+		int count = 1;
 		for(OrderDTO order : orders) {
 			//处理实际总价以及加装配置描述
 			order.setTotalPrice(order.getPrice() + order.getAddPrice());
@@ -228,6 +239,8 @@ public class OrderService {
 				order.setUpholsteryMatched(Boolean.FALSE);
 				order.setMatched(Boolean.FALSE);
 			}
+
+			order.setVin(BMWPocConstants.VIN_PREFIX + String.format("%03d", count++));
 		}
 	}
 }

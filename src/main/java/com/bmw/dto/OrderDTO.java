@@ -33,6 +33,7 @@ public class OrderDTO {
 	private String colorDescT;
 	private String configCodeT;
 	private String configDescT;
+	private String vin;
 
 	private Boolean upholsteryMatched;
 	private Boolean addCodeMatched;
@@ -226,6 +227,12 @@ public class OrderDTO {
 	}
 	public void setConfigDescT(String configDescT) {
 		this.configDescT = configDescT;
+	}
+	public String getVin() {
+		return vin;
+	}
+	public void setVin(String vin) {
+		this.vin = vin;
 	}
 
 }

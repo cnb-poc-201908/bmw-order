@@ -1,5 +1,7 @@
 package com.bmw;
 
+import java.util.Random;
+
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +31,9 @@ public class BmwOrderApplicationTests {
 
 		String a = "12345-";
 		System.out.println(a.substring(0, a.length() - 1));
+		System.out.println(String.format("%03d", 1));
+		Random random = new Random();
+
 	}
 
 }

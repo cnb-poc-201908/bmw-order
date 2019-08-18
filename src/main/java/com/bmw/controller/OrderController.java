@@ -60,23 +60,12 @@ public class OrderController {
 		return new RestResponse<>();
 	}
 
-	/*
-	@GetMapping(value = "/unpaid", produces = "application/json")
-	@ApiOperation(value = "未支付订单列表接口")
-	public RestResponse<List<OrderGroup>> getUnpaidOrderList(
-			@RequestParam(value = "dealerId", required = true) String dealerId){
-		RestResponse<List<OrderGroup>> response = new RestResponse<>();
-		response.setData(orderService.getUnpaidOrderGroups(dealerId));
-		return response;
-	}
-
-
-	@GetMapping(value = "/unpaid", produces = "application/json")
+	@GetMapping(value = "/paid", produces = "application/json")
 	@ApiOperation(value = "已支付订单列表接口")
 	public RestResponse<List<OrderGroup>> getPaidOrderList(
 			@RequestParam(value = "dealerId", required = true) String dealerId){
 		RestResponse<List<OrderGroup>> response = new RestResponse<>();
-		response.setData(orderService.getPaidOrderGroups(dealerId));
+		response.setData(orderService.getPaidOrderList(dealerId));
 		return response;
-	}*/
+	}
 }

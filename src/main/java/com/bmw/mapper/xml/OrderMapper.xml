@@ -110,7 +110,7 @@
 		from sales.order o,sales.materials mt, sales.color co, sales.upholstery up, sales.variant va
 		where o."dealerId"= #{dealerId} and o."materialsId" = mt."materialsId"
 		and o."colorCode" = co."colorCode" 
-		and o."dealerStatus" = '1'<!-- change to 2 -->
+		and o."dealerStatus" = '2'
 		and o."upholsteryCode" = up."upholsteryCode" 
 		and o."configCode" = va."variantCode"
 		group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode", 
@@ -132,18 +132,24 @@
 		o."colorCode", o."upholsteryCode",o."configCode", o."addCode"
 		from sales.order o,sales.materials mt
 		where o."dealerId"= #{dealerId} and o."materialsId" = mt."materialsId"
-		and o."dealerStatus" = '1'<!-- change to 2 -->
+		and o."dealerStatus" = '2'
 		group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode"
   </select>
   
   <select id="getUnpaidOrdersByGroup" parameterType="java.util.Map" resultMap="OrderDTO">
 			<include refid="Base_Get_Orders" />
 			and o."dealerId" =  #{dealerId} 
-			and o."dealerStatus" = '1'<!-- change to 2 -->
+			and o."dealerStatus" = '2'
 			and o."colorCode" = #{colorCode}
 			and o."upholsteryCode" = #{upholsteryCode}
 			and o."configCode" = #{configCode}
 			and o."addCode" = #{addCode}
+  </select>
+  
+  <select id="getPaidOrderList" parameterType="java.util.Map" resultMap="OrderDTO">
+			<include refid="Base_Get_Orders" />
+			and o."dealerId" =  #{dealerId} 
+			and o."dealerStatus" = '1'<!-- change to 3 -->
   </select>
   
   <update id="updateOrderStatus" parameterType="java.util.Map">

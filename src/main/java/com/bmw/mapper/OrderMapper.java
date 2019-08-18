@@ -10,6 +10,8 @@ public interface OrderMapper {
 
     List<OrderDTO> getUnconfirmedOrderList(Map<String, String> paramMap);
 
+    List<OrderDTO> getPaidOrderList(Map<String, String> paramMap);
+
     List<OrderGroup> getUnpaidOrderGroups(Map<String, String> paramMap);
 
     List<OrderGroup> getRemains(Map<String, String> paramMap);
