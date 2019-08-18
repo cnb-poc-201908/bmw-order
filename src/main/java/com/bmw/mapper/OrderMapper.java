@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bmw.dto.OrderDTO;
+import com.bmw.dto.OrderFlow;
 import com.bmw.dto.OrderGroup;
 
 public interface OrderMapper {
@@ -11,6 +12,8 @@ public interface OrderMapper {
     List<OrderDTO> getUnconfirmedOrderList(Map<String, String> paramMap);
 
     List<OrderDTO> getPaidOrderList(Map<String, String> paramMap);
+
+    List<OrderFlow> getOrderFlows(String matchStatus);
 
     List<OrderGroup> getUnpaidOrderGroups(Map<String, String> paramMap);
 

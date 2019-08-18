@@ -1,6 +1,7 @@
 package com.bmw.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bmw.dto.OrderFlow;
 import com.bmw.dto.OrderGroup;
 import com.bmw.entity.response.RestResponse;
 import com.bmw.service.OrderService;
@@ -66,6 +68,15 @@ public class OrderController {
 			@RequestParam(value = "dealerId", required = true) String dealerId){
 		RestResponse<List<OrderGroup>> response = new RestResponse<>();
 		response.setData(orderService.getPaidOrderList(dealerId));
+		return response;
+	}
+
+	@GetMapping(value = "/orderflows", produces = "application/json")
+	@ApiOperation(value = "订单流向列表接口")
+	public RestResponse<Map<String, List<OrderFlow>>> getOrderFlows(
+			@RequestParam(value = "matchStatus", required = true) String matchStatus){
+		RestResponse<Map<String, List<OrderFlow>>> response = new RestResponse<>();
+		response.setData(orderService.getOrderFlows(matchStatus));
 		return response;
 	}
 }

@@ -67,6 +67,12 @@
     <result column="configDesc" jdbcType="VARCHAR" property="configDesc" />
   </resultMap>
   
+  <resultMap id="OrderFlow" type="com.bmw.dto.OrderFlow">
+    <result column="dealerName" jdbcType="VARCHAR" property="target" />
+    <result column="description" jdbcType="VARCHAR" property="source" />
+    <result column="amount" jdbcType="BIGINT" property="value" />
+  </resultMap>
+  
   <sql id="Base_Get_Orders">
 		SELECT o."dealerId", o."orderId",
 		       'BMW' as "brand", mt."modelCode", 
@@ -150,6 +156,20 @@
 			<include refid="Base_Get_Orders" />
 			and o."dealerId" =  #{dealerId} 
 			and o."dealerStatus" = '3'
+  </select>
+  
+  <select id="getOrderFlows" parameterType="java.lang.String" resultMap="OrderFlow">
+	select count(*) amount,d."dealerName",
+	va."variantDescription"||' '|| co."colorDescription"||' '||up."upholsteryDescription"||' '||o."yearType"||' '||o."addCode" as description
+	from sales.order o, sales.upholstery up, sales.variant va, sales.color co, sales.dealer d
+	where o."dealerStatus" != '0'
+	and o."matchStatus" = #{value}
+	and o."colorCode" = co."colorCode" 
+	and o."upholsteryCode" = up."upholsteryCode" 
+	and o."configCode" = va."variantCode"
+	and o."dealerId" = d."dealerId"
+	group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode",d."dealerId", d."dealerName",o."yearType",
+	co."colorDescription", up."upholsteryDescription", va."variantDescription"
   </select>
   
   <update id="updateOrderStatus" parameterType="java.util.Map">

@@ -3,8 +3,10 @@ package com.bmw.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.bmw.common.BMWPocConstants;
 import com.bmw.dto.OrderDTO;
+import com.bmw.dto.OrderFlow;
 import com.bmw.dto.OrderGroup;
 import com.bmw.mapper.OrderMapper;
 
@@ -107,6 +110,27 @@ public class OrderService {
 			paramMap.put("orderIdList", orderIdList);
 		}
 		orderMapper.updateOrderStatus(paramMap);
+	}
+
+	public Map<String, List<OrderFlow>> getOrderFlows(String matchStatus){
+		Set<String> items = new HashSet<>();
+		List<OrderFlow> orderFlows = orderMapper.getOrderFlows(matchStatus);
+		for(OrderFlow flow : orderFlows) {
+			items.add(flow.getSource());
+			items.add(flow.getTarget());
+		}
+
+		List<OrderFlow> names = new ArrayList<>();
+		for(String item : items) {
+			OrderFlow name = new OrderFlow();
+			name.setName(item);
+			names.add(name);
+		}
+
+		Map<String, List<OrderFlow>> result = new HashMap<>();
+		result.put("links", orderFlows);
+		result.put("data", names);
+		return result;
 	}
 
 
