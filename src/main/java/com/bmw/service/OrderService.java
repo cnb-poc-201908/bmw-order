@@ -52,6 +52,22 @@ public class OrderService {
 				concatOrderIds(group);
 				generateGroupId(group);
 				group.setAddDescs(getAddDescs(group.getAddCodes()));
+
+				List<OrderDTO> ordersInGroup = group.getOrders();
+				if(ordersInGroup != null) {
+					int unmatchAmount = 0;
+					Float totalPrice = 0f;
+					for(OrderDTO order: ordersInGroup) {
+						if(!order.getMatched()) {
+							unmatchAmount++;
+						}
+						totalPrice += order.getTotalPrice();
+					}
+					group.setAmount(group.getOrders().size());
+					Integer rate = Math.round((1f - (float)unmatchAmount/group.getAmount())*100);
+					group.setMatchRate(rate);
+					group.setTotalPrice(totalPrice);
+				}
 			}
 		}
 		return groups;
