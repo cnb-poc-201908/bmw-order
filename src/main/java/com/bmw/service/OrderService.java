@@ -134,7 +134,7 @@ public class OrderService {
 			group.setAddCodes(order.getAddCodesT());
 			group.setAddDescs(order.getAddDescsT());
 			group.setColorCode(order.getColorCodeT());
-			group.setColorDesc(order.getColorCodeT());
+			group.setColorDesc(order.getColorDescT());
 			group.setConfigCode(order.getConfigCodeT());
 			group.setConfigDesc(order.getConfigDescT());
 			group.setUpholsteryCode(order.getUpholsteryCodeT());
