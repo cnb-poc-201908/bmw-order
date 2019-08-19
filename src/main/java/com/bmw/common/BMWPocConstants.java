@@ -20,6 +20,7 @@ public class BMWPocConstants {
 	public static final String VALUE_OF_NOADD = "N";
 	public static final String ADD_SEPARATOR = "-";
 	public static final String ORDER_ID_SEPARATOR = "-";
+	public static final String PARAM_UNDEFINED = "undefined";
 	public static final String VIN_PREFIX = "WBAHN81027DT22";
 	//车型附加配置项
 	public static final Map<String, String> ADDS = new HashMap<>();

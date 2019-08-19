@@ -135,8 +135,12 @@ public class OrderService {
 
 	public List<OrderDTO> getOrderDistributionList(String region, String province){
 		Map<String, String> paramMap = new HashMap<>();
-		paramMap.put("region", region);
-		paramMap.put("province", province);
+		if(StringUtils.isNotBlank(region) && !BMWPocConstants.PARAM_UNDEFINED.equals(region)) {
+			paramMap.put("region", region);
+		}
+		if(StringUtils.isNotBlank(province) && !BMWPocConstants.PARAM_UNDEFINED.equals(province)) {
+			paramMap.put("province", province);
+		}
 
 		return orderMapper.getOrderDistributionList(paramMap);
 	}
