@@ -1,6 +1,7 @@
 package com.bmw.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -46,6 +47,7 @@ public class OrderDTO {
 	private Boolean configCodeMatched;
 	private Boolean colorMatched;
 	private Boolean matched;
+	private Map<String, String> cellClassName;
 
 
 	public String getDealerId() {
@@ -269,6 +271,12 @@ public class OrderDTO {
 	}
 	public void setMatchStatus(String matchStatus) {
 		this.matchStatus = matchStatus;
+	}
+	public Map<String, String> getCellClassName() {
+		return cellClassName;
+	}
+	public void setCellClassName(Map<String, String> cellClassName) {
+		this.cellClassName = cellClassName;
 	}
 
 }

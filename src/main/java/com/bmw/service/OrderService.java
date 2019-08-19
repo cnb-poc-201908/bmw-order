@@ -149,7 +149,32 @@ public class OrderService {
 			paramMap.put("province", province);
 		}
 		paramMap.put("matchStatus", matchStatus);
-		return orderMapper.getOrderDistributionList(paramMap);
+		List<OrderDTO> orders = orderMapper.getOrderDistributionList(paramMap);
+		processOrders(orders);
+		for(OrderDTO order : orders) {
+			Map<String, String> map = new HashMap<>();
+			if(!order.getColorMatched()) {
+				map.put(BMWPocConstants.KEY_COLOR, BMWPocConstants.CLASS_NAME);
+				map.put(BMWPocConstants.KEY_COLOR + BMWPocConstants.TARGET_SUFFIX, BMWPocConstants.CLASS_NAME);
+			}
+
+			if(!order.getUpholsteryMatched()) {
+				map.put(BMWPocConstants.KEY_UPHOLSTERY, BMWPocConstants.CLASS_NAME);
+				map.put(BMWPocConstants.KEY_UPHOLSTERY + BMWPocConstants.TARGET_SUFFIX, BMWPocConstants.CLASS_NAME);
+			}
+
+			if(!order.getConfigCodeMatched()) {
+				map.put(BMWPocConstants.KEY_CONFIG, BMWPocConstants.CLASS_NAME);
+				map.put(BMWPocConstants.KEY_CONFIG + BMWPocConstants.TARGET_SUFFIX, BMWPocConstants.CLASS_NAME);
+			}
+
+			if(!order.getAddCodeMatched()) {
+				map.put(BMWPocConstants.KEY_ADD, BMWPocConstants.CLASS_NAME);
+				map.put(BMWPocConstants.KEY_ADD + BMWPocConstants.TARGET_SUFFIX, BMWPocConstants.CLASS_NAME);
+			}
+			order.setCellClassName(map);
+		}
+		return orders;
 	}
 
 	public List<OrderGroup> getOrderGroupsByDealer(String dealerId){

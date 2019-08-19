@@ -192,25 +192,35 @@
   </select>
   
   <select id="getOrderDistributionList" parameterType="java.util.Map" resultMap="OrderDTO">
-	select o."orderId",mt."materialsId", mt.vin , d."dealerName", d."region", d."province",
-	va."variantDescription" as "configDesc", co."colorDescription" as "colorDesc", 
-	up."upholsteryDescription" as "upholsteryDesc", o."yearType",o."addCode" as "addCodes",
-	o."dealerStatus", o."matchStatus", mt."apw"
-	from sales.order o, sales.materials mt, sales.dealer d, 
-	sales.upholstery up, sales.variant va, sales.color co
-	where o."materialsId" = mt."materialsId"
-	and o."dealerId" = d."dealerId"
-	and mt."colorCode" = co."colorCode" 
-	and mt."upholsteryCode" = up."upholsteryCode" 
-	and mt."configCode" = va."variantCode"
-	and o."matchStatus" = #{matchStatus}
-	and o."dealerStatus" != '0'
-	<if test="region != null">
-		and d."region" = #{region}
-	</if>
-	<if test="province != null">
-		and d."province" = #{province}
-	</if>
+		SELECT o."dealerId", o."orderId",
+		       'BMW' as "brand", mt."modelCode", 
+			   mt."apw", 
+			   mt."upholsteryCode", mt."upholsteryDesc",
+			   o."upholsteryCode" as "upholsteryCodeT",
+			   mt."addCode", mt."addPrice",
+			   o."addCode" as "addCodeT",
+			   mt."price", o."dealerStatus", mt."materialsId",
+			   mt."colorCode", mt."colorDesc",
+			   o."colorCode" as "colorCodeT",
+			   mt."configCode",
+			   o."configCode" as "configCodeT",
+			   o."dealerStatus",
+			   mt.vin,
+			   d."dealerName",
+			   d."region",
+			   d."province",
+			   o."matchStatus"
+			FROM sales.materials mt, sales.order o, sales.dealer d
+			where mt."materialsId" = o."materialsId" 
+			and o."dealerId" = d."dealerId"
+			and o."matchStatus" = #{matchStatus}
+			and o."dealerStatus" != '0'
+			<if test="region != null">
+				and d."region" = #{region}
+			</if>
+			<if test="province != null">
+				and d."province" = #{province}
+			</if>
   </select>
   
   <select id="getOrderGroupsByDealer" parameterType="java.util.Map" resultMap="OrderGroup">

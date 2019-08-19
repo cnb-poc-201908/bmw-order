@@ -22,6 +22,14 @@ public class BMWPocConstants {
 	public static final String ORDER_ID_SEPARATOR = "-";
 	public static final String PARAM_UNDEFINED = "undefined";
 	public static final String VIN_PREFIX = "WBAHN81027DT22";
+
+	public static final String KEY_COLOR = "colorDesc";
+	public static final String KEY_UPHOLSTERY = "upholsteryDesc";
+	public static final String KEY_CONFIG = "configDesc";
+	public static final String KEY_ADD = "addDescs";
+	public static final String CLASS_NAME = "different";
+	public static final String TARGET_SUFFIX = "T";
+
 	//车型附加配置项
 	public static final Map<String, String> ADDS = new HashMap<>();
 	public static final Map<String, String> UPHOLSTERIES = new HashMap<>();
