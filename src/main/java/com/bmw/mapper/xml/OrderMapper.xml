@@ -163,7 +163,9 @@
 	va."variantDescription"||' '|| co."colorDescription"||' '||up."upholsteryDescription"||' '||o."yearType"||' '||o."addCode" as description
 	from sales.order o, sales.upholstery up, sales.variant va, sales.color co, sales.dealer d
 	where o."dealerStatus" != '0'
-	and o."matchStatus" = #{value}
+	<if test="value != null">
+		and o."matchStatus" = #{value}
+	</if>
 	and o."colorCode" = co."colorCode" 
 	and o."upholsteryCode" = up."upholsteryCode" 
 	and o."configCode" = va."variantCode"

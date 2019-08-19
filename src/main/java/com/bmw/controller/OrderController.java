@@ -74,7 +74,7 @@ public class OrderController {
 	@GetMapping(value = "/orderflows", produces = "application/json")
 	@ApiOperation(value = "订单流向列表接口")
 	public RestResponse<Map<String, List<OrderFlow>>> getOrderFlows(
-			@RequestParam(value = "matchStatus", required = true) String matchStatus){
+			@RequestParam(value = "matchStatus", required = false) String matchStatus){
 		RestResponse<Map<String, List<OrderFlow>>> response = new RestResponse<>();
 		response.setData(orderService.getOrderFlows(matchStatus));
 		return response;
