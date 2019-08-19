@@ -25,6 +25,9 @@ public class OrderGroup {
 	private Integer totalRemain;
 	private String orderIds;
 
+	private Integer matchedAmount;
+	private String description;
+
 	public Float getTotalPrice() {
 		return totalPrice;
 	}
@@ -120,6 +123,18 @@ public class OrderGroup {
 	}
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
+	}
+	public Integer getMatchedAmount() {
+		return matchedAmount;
+	}
+	public void setMatchedAmount(Integer matchedAmount) {
+		this.matchedAmount = matchedAmount;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

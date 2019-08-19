@@ -23,5 +23,7 @@ public interface OrderMapper {
 
     List<OrderDTO> getOrderDistributionList(Map<String, String> paramMap);
 
+    List<OrderGroup> getOrderGroupsByDealer(Map<String, String> paramMap);
+
     void updateOrderStatus(Map<String, Object> paramMap);
 }

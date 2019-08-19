@@ -74,6 +74,9 @@
     <result column="upholsteryDesc" jdbcType="VARCHAR" property="upholsteryDesc" />
     <result column="configCode" jdbcType="VARCHAR" property="configCode" />
     <result column="configDesc" jdbcType="VARCHAR" property="configDesc" />
+    
+    <result column="matchedAmount" jdbcType="BIGINT" property="matchedAmount" />
+    <result column="description" jdbcType="BIGINT" property="description" />
   </resultMap>
   
   <resultMap id="OrderFlow" type="com.bmw.dto.OrderFlow">
@@ -182,6 +185,7 @@
 	group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode",d."dealerId", d."dealerName",o."yearType",
 	co."colorDescription", up."upholsteryDescription", va."variantDescription"
   </select>
+  
   <select id="getOrderDistributionList" parameterType="java.util.Map" resultMap="OrderDTO">
 	select o."orderId",mt."materialsId", mt.vin , d."dealerName", d."region", d."province",
 	va."variantDescription" as "configDesc", co."colorDescription" as "colorDesc", 
@@ -201,6 +205,28 @@
 	<if test="province != null">
 		and d."province" = #{province}
 	</if>
+  </select>
+  
+  <select id="getOrderGroupsByDealer" parameterType="java.util.Map" resultMap="OrderGroup">
+	select count(*) amount,
+	(select count(*) from sales.order od 
+	 	where od."dealerId" = #{dealerId}
+		and od."colorCode" = o."colorCode"
+	    and od."upholsteryCode" = o."upholsteryCode"
+	    and od."configCode" = o."configCode"
+	    and od."addCode" = o."addCode"
+	    and od."yearType" = o."yearType"
+		and od."matchStatus"='1') as "matchedCount",
+	va."variantDescription"||' '|| co."colorDescription"||' '||up."upholsteryDescription"||' '||o."yearType"||' '||o."addCode" as description
+	from sales.order o, sales.upholstery up, sales.variant va, sales.color co, sales.dealer d
+	where o."dealerStatus" != '0'
+	and o."colorCode" = co."colorCode" 
+	and o."upholsteryCode" = up."upholsteryCode" 
+	and o."configCode" = va."variantCode"
+	and o."dealerId" = d."dealerId"
+	and o."dealerId" = #{dealerId}
+	group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode",d."dealerId", d."dealerName",o."yearType",
+	co."colorDescription", up."upholsteryDescription", va."variantDescription"
   </select>
   
   <update id="updateOrderStatus" parameterType="java.util.Map">

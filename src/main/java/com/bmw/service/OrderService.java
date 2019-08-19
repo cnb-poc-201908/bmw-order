@@ -145,6 +145,18 @@ public class OrderService {
 		return orderMapper.getOrderDistributionList(paramMap);
 	}
 
+	public List<OrderGroup> getOrderGroupsByDealer(String dealerId){
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("dealerId", dealerId);
+		List<OrderGroup> list = orderMapper.getOrderGroupsByDealer(paramMap);
+		if(list != null) {
+			for(OrderGroup group: list) {
+				group.setMatchRate(Math.round((float)group.getMatchedAmount()/group.getAmount()*100));
+			}
+		}
+		return list;
+	}
+
 
 	private List<OrderGroup> groupOrders(List<OrderDTO> orders, Map<String, OrderGroup> groupMap) {
 		for(OrderDTO order : orders) {

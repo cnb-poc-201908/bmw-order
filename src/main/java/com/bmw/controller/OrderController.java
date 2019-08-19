@@ -90,4 +90,13 @@ public class OrderController {
 		response.setData(orderService.getOrderDistributionList(region, province));
 		return response;
 	}
+
+	@GetMapping(value = "/groups", produces = "application/json")
+	@ApiOperation(value = "经销商订单匹配情况列表接口")
+	public RestResponse<List<OrderGroup>> getOrderGroupsByDealer(
+			@RequestParam(value = "dealerId", required = true) String dealerId){
+		RestResponse<List<OrderGroup>> response = new RestResponse<>();
+		response.setData(orderService.getOrderGroupsByDealer(dealerId));
+		return response;
+	}
 }
