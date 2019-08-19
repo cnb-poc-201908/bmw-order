@@ -45,6 +45,7 @@ public class BMWPocConstants {
 		ADDS.put("ZMP", "Entertainment");
 		ADDS.put("676", "HiFi loudspeaker system");
 		ADDS.put("6WB", "Multifunctional instrument display");
+		ADDS.put("322", "Comfort access system");
 
 		UPHOLSTERIES.put("KCMY", "Sensatec Moccha");
 		UPHOLSTERIES.put("KCSW", "Sensatec black");
