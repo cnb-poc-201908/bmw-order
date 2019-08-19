@@ -9,7 +9,9 @@ import com.bmw.dto.OrderGroup;
 
 public interface OrderMapper {
 
-    List<OrderDTO> getUnconfirmedOrderList(Map<String, String> paramMap);
+	List<OrderDTO> getFullOrderList();
+
+	List<OrderDTO> getUnconfirmedOrderList(Map<String, String> paramMap);
 
     List<OrderDTO> getPaidOrderList(Map<String, String> paramMap);
 

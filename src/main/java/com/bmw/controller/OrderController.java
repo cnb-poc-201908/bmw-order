@@ -27,6 +27,14 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
+	@GetMapping(value = "/full", produces = "application/json")
+	@ApiOperation(value = "所有订单列表接口")
+	public RestResponse<List<OrderGroup>> getFullList(){
+		RestResponse<List<OrderGroup>> response = new RestResponse<>();
+		response.setData(orderService.getFullOrderList());
+		return response;
+	}
+
 	@GetMapping(value = "/unconfirmed", produces = "application/json")
 	@ApiOperation(value = "待确定订单列表接口")
 	public RestResponse<List<OrderGroup>> getUnconfirmedOrderList(
@@ -85,9 +93,10 @@ public class OrderController {
 	@ApiOperation(value = "订单分布列表接口")
 	public RestResponse<List<OrderDTO>> getOrderDistributionList(
 			@RequestParam(value = "region", required = false) String region,
-			@RequestParam(value = "province", required = false) String province){
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "matchStatus", required = true) String matchStatus){
 		RestResponse<List<OrderDTO>> response = new RestResponse<>();
-		response.setData(orderService.getOrderDistributionList(region, province));
+		response.setData(orderService.getOrderDistributionList(region, province, matchStatus));
 		return response;
 	}
 

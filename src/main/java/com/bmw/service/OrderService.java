@@ -28,6 +28,13 @@ public class OrderService {
 	@Autowired
 	private OrderMapper orderMapper;
 
+	public List<OrderGroup> getFullOrderList(){
+		List<OrderDTO> orders = orderMapper.getFullOrderList();
+		processOrders(orders);
+		Map<String, OrderGroup> groupMap = new HashMap<>();
+		return groupOrders(orders, groupMap);
+	}
+
 	public List<OrderGroup> getUnconfirmedOrderList(String dealerId){
 		Map<String, String> paramMap = new HashMap<>();
 		paramMap.put("dealerId", dealerId);
@@ -133,7 +140,7 @@ public class OrderService {
 		return result;
 	}
 
-	public List<OrderDTO> getOrderDistributionList(String region, String province){
+	public List<OrderDTO> getOrderDistributionList(String region, String province, String matchStatus){
 		Map<String, String> paramMap = new HashMap<>();
 		if(StringUtils.isNotBlank(region) && !BMWPocConstants.PARAM_UNDEFINED.equals(region)) {
 			paramMap.put("region", region);
@@ -141,7 +148,7 @@ public class OrderService {
 		if(StringUtils.isNotBlank(province) && !BMWPocConstants.PARAM_UNDEFINED.equals(province)) {
 			paramMap.put("province", province);
 		}
-
+		paramMap.put("matchStatus", matchStatus);
 		return orderMapper.getOrderDistributionList(paramMap);
 	}
 

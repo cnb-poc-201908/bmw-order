@@ -107,6 +107,11 @@
 			and o."dealerStatus" = '1'
   </select>
   
+  <select id="getFullOrderList" resultMap="OrderDTO">
+			<include refid="Base_Get_Orders" />
+			and o."dealerStatus" != '0'
+  </select>
+  
   <select id="getUnpaidOrderGroups" parameterType="java.util.Map" resultMap="OrderGroup">
 		select 
 		sum(mt.price+cast(mt."addPrice" as double precision)) as "totalPrice",
@@ -198,6 +203,7 @@
 	and mt."colorCode" = co."colorCode" 
 	and mt."upholsteryCode" = up."upholsteryCode" 
 	and mt."configCode" = va."variantCode"
+	and o."matchStatus" = #{matchStatus}
 	and o."dealerStatus" != '0'
 	<if test="region != null">
 		and d."region" = #{region}
