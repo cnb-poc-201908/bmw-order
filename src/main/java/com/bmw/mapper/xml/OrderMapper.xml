@@ -216,7 +216,7 @@
 	    and od."configCode" = o."configCode"
 	    and od."addCode" = o."addCode"
 	    and od."yearType" = o."yearType"
-		and od."matchStatus"='1') as "matchedCount",
+		and od."matchStatus"='1') as "matchedAmount",
 	va."variantDescription"||' '|| co."colorDescription"||' '||up."upholsteryDescription"||' '||o."yearType"||' '||o."addCode" as description
 	from sales.order o, sales.upholstery up, sales.variant va, sales.color co, sales.dealer d
 	where o."dealerStatus" != '0'

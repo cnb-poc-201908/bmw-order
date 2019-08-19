@@ -151,6 +151,8 @@ public class OrderService {
 		List<OrderGroup> list = orderMapper.getOrderGroupsByDealer(paramMap);
 		if(list != null) {
 			for(OrderGroup group: list) {
+				logger.info("group.getMatchedAmount() {}", group.getMatchedAmount());
+				logger.info("group.getAmount() {}", group.getAmount());
 				group.setMatchRate(Math.round((float)group.getMatchedAmount()/group.getAmount()*100));
 			}
 		}
