@@ -21,5 +21,7 @@ public interface OrderMapper {
 
     List<OrderDTO> getUnpaidOrdersByGroup(Map<String, String> paramMap);
 
+    List<OrderDTO> getOrderDistributionList(Map<String, String> paramMap);
+
     void updateOrderStatus(Map<String, Object> paramMap);
 }

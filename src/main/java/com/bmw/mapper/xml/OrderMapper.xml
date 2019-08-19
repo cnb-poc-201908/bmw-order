@@ -42,7 +42,6 @@
     <result column="price" jdbcType="BIGINT" property="price" />
     <result column="dealerStatus" jdbcType="BIGINT" property="dealerStatus" />
     <result column="materialsId" jdbcType="VARCHAR" property="materialsId" />
-    
     <result column="configCode" jdbcType="VARCHAR" property="configCode" />
     <result column="upholsteryCodeT" jdbcType="VARCHAR" property="upholsteryCodeT" />
     <result column="addCodeT" jdbcType="VARCHAR" property="addCodesT" />
@@ -50,6 +49,16 @@
     <result column="colorDesc" jdbcType="VARCHAR" property="colorDesc" />
     <result column="colorCodeT" jdbcType="VARCHAR" property="colorCodeT" />
     <result column="configCodeT" jdbcType="VARCHAR" property="configCodeT" />
+    
+    <result column="vin" jdbcType="VARCHAR" property="vin" />
+    <result column="dealerName" jdbcType="VARCHAR" property="dealerName" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="configDesc" jdbcType="VARCHAR" property="configDesc" />
+    <result column="colorDesc" jdbcType="VARCHAR" property="colorDesc" />
+    <result column="upholsteryDesc" jdbcType="VARCHAR" property="upholsteryDesc" />
+    <result column="yearType" jdbcType="VARCHAR" property="yearType" />
+    <result column="matchStatus" jdbcType="VARCHAR" property="matchStatus" />
   </resultMap>
   
   <resultMap id="OrderGroup" type="com.bmw.dto.OrderGroup">
@@ -172,6 +181,26 @@
 	and o."dealerId" = d."dealerId"
 	group by o."colorCode", o."upholsteryCode",o."configCode", o."addCode",d."dealerId", d."dealerName",o."yearType",
 	co."colorDescription", up."upholsteryDescription", va."variantDescription"
+  </select>
+  <select id="getOrderDistributionList" parameterType="java.util.Map" resultMap="OrderDTO">
+	select o."orderId",mt."materialsId", mt.vin , d."dealerName", d."region", d."province",
+	va."variantDescription" as "configDesc", co."colorDescription" as "colorDesc", 
+	up."upholsteryDescription" as "upholsteryDesc", o."yearType",o."addCode" as "addCodes",
+	o."dealerStatus", o."matchStatus", mt."apw"
+	from sales.order o, sales.materials mt, sales.dealer d, 
+	sales.upholstery up, sales.variant va, sales.color co
+	where o."materialsId" = mt."materialsId"
+	and o."dealerId" = d."dealerId"
+	and mt."colorCode" = co."colorCode" 
+	and mt."upholsteryCode" = up."upholsteryCode" 
+	and mt."configCode" = va."variantCode"
+	and o."dealerStatus" != '0'
+	<if test="region != null">
+		and d."region" = #{region}
+	</if>
+	<if test="province != null">
+		and d."province" = #{province}
+	</if>
   </select>
   
   <update id="updateOrderStatus" parameterType="java.util.Map">

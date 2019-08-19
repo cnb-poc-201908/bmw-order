@@ -35,6 +35,12 @@ public class OrderDTO {
 	private String configDescT;
 	private String vin;
 
+	private String dealerName;
+	private String region;
+	private String province;
+	private String yearType;
+	private String matchStatus;
+
 	private Boolean upholsteryMatched;
 	private Boolean addCodeMatched;
 	private Boolean configCodeMatched;
@@ -233,6 +239,36 @@ public class OrderDTO {
 	}
 	public void setVin(String vin) {
 		this.vin = vin;
+	}
+	public String getDealerName() {
+		return dealerName;
+	}
+	public void setDealerName(String dealerName) {
+		this.dealerName = dealerName;
+	}
+	public String getRegion() {
+		return region;
+	}
+	public void setRegion(String region) {
+		this.region = region;
+	}
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	public String getYearType() {
+		return yearType;
+	}
+	public void setYearType(String yearType) {
+		this.yearType = yearType;
+	}
+	public String getMatchStatus() {
+		return matchStatus;
+	}
+	public void setMatchStatus(String matchStatus) {
+		this.matchStatus = matchStatus;
 	}
 
 }

@@ -133,6 +133,14 @@ public class OrderService {
 		return result;
 	}
 
+	public List<OrderDTO> getOrderDistributionList(String region, String province){
+		Map<String, String> paramMap = new HashMap<>();
+		paramMap.put("region", region);
+		paramMap.put("province", province);
+
+		return orderMapper.getOrderDistributionList(paramMap);
+	}
+
 
 	private List<OrderGroup> groupOrders(List<OrderDTO> orders, Map<String, OrderGroup> groupMap) {
 		for(OrderDTO order : orders) {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bmw.dto.OrderDTO;
 import com.bmw.dto.OrderFlow;
 import com.bmw.dto.OrderGroup;
 import com.bmw.entity.response.RestResponse;
@@ -77,6 +78,16 @@ public class OrderController {
 			@RequestParam(value = "matchStatus", required = false) String matchStatus){
 		RestResponse<Map<String, List<OrderFlow>>> response = new RestResponse<>();
 		response.setData(orderService.getOrderFlows(matchStatus));
+		return response;
+	}
+
+	@GetMapping(value = "/distribution", produces = "application/json")
+	@ApiOperation(value = "订单分布列表接口")
+	public RestResponse<List<OrderDTO>> getOrderDistributionList(
+			@RequestParam(value = "region", required = false) String region,
+			@RequestParam(value = "province", required = false) String province){
+		RestResponse<List<OrderDTO>> response = new RestResponse<>();
+		response.setData(orderService.getOrderDistributionList(region, province));
 		return response;
 	}
 }
